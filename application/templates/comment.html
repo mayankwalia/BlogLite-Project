@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% from "macros/fields.html" import render_field %}
+{% block title %}Login Page | {% endblock title %}
+{% block content_title %}
+Adding comment on {{post.author.username}}'s post
+{% endblock content_title %}
+{% block content %}
+
+<form action="{{ url_for('posts.comment',post_id=post.post_id)}}" class="form form-horizontal" method='POST'>
+    {{ form.hidden_tag() }}
+    {{ render_field(form.comment)}}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9 mt-3">
+            {{ form.submit(class='btn btn-success') }}
+            <a class="btn btn-danger" href="{{ url_for('posts.individual_post',post_id=post.post_id) }}">Cancel</a>
+        </div>
+    </div>
+</form>
+{% endblock content %}

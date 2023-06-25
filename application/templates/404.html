@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}404 | {% endblock title %}
+{% block content_title %}
+{% endblock content_title %}
+{% block content %}
+<div class="mt-5 text-center">
+    <p class="display-5">SOORY</p>
+    <p>We couldn't find that page</p>
+    <small>Check the url and try again or go to <a href="{{url_for('home')}}">BlogLite's home page</a></small>
+</div>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% from "macros/fields.html" import render_field %}
+{% from "macros/imagefield.html" import render_image %}
+{% block title %}Create Blog | {% endblock title %}
+{% block content_title %}
+    
+{% endblock content_title %}
+{% block content %}
+
+<form {% if update  %}action="{{ url_for('posts.edit',post_id=post_id)}}"{% else %}action="{{ url_for('posts.create')}}"{% endif %} method="POST" enctype="multipart/form-data">
+
+    {{ form.hidden_tag() }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.description) }}
+    {{ render_image(form.image) }} 
+    {% if update %}
+    <div class="form-check m-2">
+        <input class="form-check-input" type="checkbox" value="True" id="remove" name="remove">
+        <label class="form-check-label" for="remove">
+          Remove Blog Image
+        </label>
+      </div>
+    {% endif %}
+    {% if update %}
+    <button type="submit" class="btn btn-outline-primary mt-3">Update</button>
+    {% else %}
+    {{form.submit(class='btn btn-outline-primary mt-3')}}
+    {% endif %}
+</form>
+{% endblock content %}

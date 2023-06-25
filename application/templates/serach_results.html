@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Search | {% endblock title %}
+{% block content_title %}
+Search Results
+{% endblock content_title %}
+{% block content %}
+{% for user in users %}
+<div class="d-flex container p-3">
+    <a class="" href="{{url_for('users.dashboard',user=user)}}"><span>{{user.username}}</span></a>
+    {% if current_user.user_id!=user.user_id %}
+    {% if user in followers %}
+    <a class="btn btn-outline-primary ms-auto" href="{{url_for('users.unfollow',user=user.user_id)}}">Following</a>
+    {% else %}
+    <a class="btn btn-outline-default ms-auto" href="{{url_for('users.follow',user=user.user_id)}}">Follow</a>
+    {% endif %}
+        
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock content %}

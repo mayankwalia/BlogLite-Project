@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Home | {% endblock title %}
+{% block content_title %}
+<p class="display-1">Welcome to BlogLite</p>  
+{% endblock content_title %}
+{% block content %}
+<div class="container blockquote">
+<p>BlogLite is a free, online, easy to use blog-sharing application and social network platform.
+</p>
+<p>BlogLite allows users to edit and upload blogs and attach images through a web app. Users can add a caption to each of their blogs. Each post by a user appears on their followers' BlogLite feeds and can be viewed by the public when the blog is not archived. Users also have the option of making their blogs private so that only they can view their blogs and no one else.Users can upload their profile pic and can also add their bio.</p>
+<p>As with other social networking platforms, BlogLite users can like, comment on others blogs. Users can connect with each other using the inbuilt keyword based search functionality. They can also download view statistics based on their blogs engagement data along with some nice looking visuals and export it in form of a csv file. The app also provides api support. So what are you waiting for, try exploring BlogLite NOW!</p>
+<hr/>
+</div>
+
+  <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="2000">
+        <img src="{{url_for('static',filename='carousel/create.jpg')}}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Create Blogs easy</h5>
+          <p>Show your blogging skills to the world.</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="{{url_for('static',filename='carousel/profile.jpg')}}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Seperate Dashboard</h5>
+          <p>Contains all your posts as well as statistics.</p>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="{{url_for('static',filename='carousel/search.jpg')}}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Search anyone easily</h5>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="{{url_for('static',filename='carousel/comment.jpg')}}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 class="text-light">Likes and Comments</h5>
+          <p class="text-light">Show your engagement on other Blogs.</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+{% endblock content %}

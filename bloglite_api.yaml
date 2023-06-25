@@ -1,0 +1,619 @@
+openapi: 3.0.0
+info:
+  title: Blog Lite Application
+  description: >
+    <div>Intro - Blglite flask restful API
+    <h3>Use:</h3>
+    <ol> 
+      <li>CRUD on Users</li>
+      <li>CRUD on Blogs</li>
+      <li>Getting Feed of a user</li>
+    </ol>
+    </div>
+
+    <h3> Users Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>user_name</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>hashed_password</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>follower_count</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>        
+      <tr>
+        <td>following_count</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>  
+      <tr>
+        <td>post_count</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>  
+      <tr>
+        <td>account_created</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>  
+      <tr>
+        <td>profile_image</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr> 
+    </tbody>
+    </table>
+
+    <h3> Posts Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>post_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>title</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>    
+      <tr>
+        <td>image_url</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr> 
+     <tr>
+        <td>created_timestamp</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr> 
+      <tr>
+        <td>last_edited_timestamp</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>  
+     <tr>
+        <td>author_id</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+     <tr>
+        <td>hidden</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>likes_count</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+
+    <h3> Likes Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>like_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>post_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>    
+    </table>
+
+    <h3> Comments Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>comment_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>post_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>    
+      <tr>
+        <td>comment_body</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>  
+      <tr>
+        <td>created_timestamp</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>  
+    </table>
+    
+    <h3> Follows Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>followed_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>
+      <tr>
+        <td>follower_id</td>
+        <td>Integer</td>
+        <td>Foreign Key</td>
+      </tr>
+      <tr>
+        <td>timestamp</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>    
+    </table>
+    
+    <h3> Error Codes </h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>User</td>
+        <td>USER001</td>
+        <td>username is required</td>
+      </tr>      
+      <tr>
+        <td>User</td>
+        <td>USER002</td>
+        <td>password is required</td>
+      </tr>    
+      <tr>
+        <td>User</td>
+        <td>USER003</td>
+        <td>username already taken</td>
+      </tr> 
+      <tr>
+        <td>Posts</td>
+        <td>BLOG001</td>
+        <td>title is required</td>
+      </tr>
+      <tr>
+        <td>Posts</td>
+        <td>BLOG002</td>
+        <td>description is required</td>
+      </tr>
+    </tbody>
+    </table>
+  version: 1.0.0
+  contact:
+    name: "BlogLite API"
+servers:
+  - url: http://127.0.0.1:5000
+paths:
+  /api/user/{user_id}:
+    description: End point to read, update and delete a user resource with user_id=user_id.
+    get:
+      description: Operation to Read user resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: dummy
+                  follower_count:
+                    type: integer
+                    example: 7
+                  following_count:
+                    type: integer
+                    example: 4
+                  post_count:
+                    type: integer
+                    example: 4
+                  account_created:
+                    type: string
+                    example: Thu, 29 Dec 2022 14:27:45 -0000
+        '500':
+          description: Internal Server Error
+        '404':
+          description: User Not Found
+    delete:
+      description: Operation to delete the user resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 12
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: User Not Found
+        '500':
+          description: Intenal Server Error
+
+  /api/user:
+    description: End point to create and update user resource
+    
+    put:
+      description: Operation to update the user resource. Changes the password of a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: dummy
+                password:
+                  type: string
+                  example: updatedpassword
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: dummy
+                  follower_count:
+                    type: integer
+                    example: 7
+                  following_count:
+                    type: integer
+                    example: 4
+                  post_count:
+                    type: integer
+                    example: 4
+                  account_created:
+                    type: string
+                    example: Thu, 29 Dec 2022 14:27:45 -0000
+        '500':
+          description: Internal Server Error
+        '404':
+          description: User Not Found
+
+    post:
+      description: Operation to create the user resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: dummy
+                password:
+                  type: string
+                  example: strongpassword
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: dummy
+                  follower_count:
+                    type: integer
+                    example: 0
+                  following_count:
+                    type: integer
+                    example: 0
+                  post_count:
+                    type: integer
+                    example: 0
+                  account_created:
+                    type: string
+                    example: Thu, 29 Dec 2022 14:27:45 -0000
+        '500':
+          description: Internal Server Error
+        '404':
+          description: User Not Found
+                    
+  /api/blog/{blog_id}:
+    description: Url to read, update and delete the blog resource.
+    get:
+      description: Operation to read blog resource
+      parameters:
+        - in: path
+          name: blog_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: blog object
+                type: object
+                properties:
+                  post_id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: IITM Campus
+                  description:
+                    type: string
+                    example: Visited in Paradox 2022
+                  image_url:
+                    type: string
+                    example: picture.png
+                  created_timestamp:
+                    type: string
+                    example: 2022-12-30 10:30:44.500628
+                  last_edited_timestamp:
+                    type: string
+                    example: 2022-12-30 10:30:44.500628
+                  author_id:
+                    type: integer
+                    example: 1
+                  hidden:
+                    type: integer
+                    example: 0
+                  likes_count:
+                    type: integer
+                    example: 0
+        '500':
+          description: Internal server error
+        '404':
+          description: Blog not found
+    put:
+      description: Operation to update the blog resource
+      parameters:
+        - in: path
+          name: blog_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: IITM Campus
+                description:
+                  type: string
+                  example: Visited in Paradox
+      responses:
+        '200':
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                title: blog object
+                type: object
+                properties:
+                  post_id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: IITM Campus
+                  description:
+                    type: string
+                    example: Visited in Paradox 2022
+                  image_url:
+                    type: string
+                    example: picture.png
+                  created_timestamp:
+                    type: string
+                    example: 2022-12-30 10:30:44.500628
+                  last_edited_timestamp:
+                    type: string
+                    example: 2022-12-30 10:30:44.500628
+                  author_id:
+                    type: integer
+                    example: 1
+                  hidden:
+                    type: integer
+                    example: 0
+                  likes_count:
+                    type: integer
+                    example: 0
+        '404':
+          description: Blog not found
+        '500':
+          description: Internal Server Error
+    delete:
+      description: Operation to delete the course resource
+      parameters:
+        - in: path
+          name: blog_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Blog does not exist
+
+  /api/user/{user_id}/blog:
+    description: URL to create blog by a user.
+    post:
+      description: URL to create blog by a user.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: New title
+                  description:
+                    type: string
+                    example: Updated Caption
+                  image_url:
+                    type: string
+                    example: default_blogpost.png
+      responses:
+        '200':
+          description: Successfully created
+        '400':
+          description: Invalid User Id.
+        '500':
+          description: Internal Server Error
+
+  /api/feed/{user_id}:
+    description: Url to get feed (list of blogs created by the following) of a user
+    get:
+      description: Operation to get feed (list of blogs created by the following) of a user
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json:
+              schema:
+                title: List of blog objects
+                type: object
+                properties:               
+                  post_id:
+                      type: object
+                      example:
+                        post_id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: IITM Campus
+                        description:
+                          type: string
+                          example: Visited in Paradox 2022
+                        image_url:
+                          type: string
+                          example: picture.png
+                        created_timestamp:
+                          type: string
+                          example: 2022-12-30 10:30:44.500628
+                        last_edited_timestamp:
+                          type: string
+                          example: 2022-12-30 10:30:44.500628
+                        author_id:
+                          type: integer
+                          example: 1
+                        hidden:
+                          type: integer
+                          example: 0
+                        likes_count:
+                          type: integer
+                          example: 0
+              
+        '404':
+          description: Blog not found
+        '500':
+          description: Internal Server Error

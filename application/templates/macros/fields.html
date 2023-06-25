@@ -1,0 +1,13 @@
+{% macro render_field(field) %}
+<div class="form-group">
+    <div class="form-floating mb-3 mt-3">
+        {{ field(class='form-control',placeholder="Anything") }}
+        {{ field.label(class='col-sm-3 form-label') }}
+      </div>
+      
+</div>    
+{% endmacro %}
+
+
+
+

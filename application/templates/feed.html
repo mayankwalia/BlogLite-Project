@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Feed | {% endblock title %}
+{% block content_title %}
+{% if posts|length!=0 %}
+All Blogs
+{% endif %}
+{% endblock content_title %}
+{% block content %}
+
+<!-- There are no posts to display. Either the user is not following anyone or the followed users haven't posted anything yet! -->
+{% if posts|length==0 %}
+<div class="text-center">
+  <div class="display-4">There are no posts in your feed.<p>Connect with other users to see what they are posting</p>
+  </div>
+  <div><em>Find your Connections <a href="{{url_for('users.users_listing')}}"> here</a>!</em></div>
+</div>
+<!-- If there are posts to display -->
+{% else %}
+<!-- Display each post by iterating over posts (which contains the posts made by the followed users) -->
+<div class="container mt-2">
+  {% for post in posts %}
+  <div class="row d-flex mt-1 justify-content-center align-items-center">
+    <div class="col col-md-12 col-lg-10 col-xl-8">
+      <div class="card" style="background-color:#D5CEA3">
+        <div class="card-body text-black">
+          <div class="d-flex align-items-center ms-3 me-3 mb-1 p-1 text-light" style="border-radius: 10px; background-color: #1A120B;">
+            <div class="flex-shrink-0 ms-2">
+              <a href="{{url_for('users.dashboard',user=post.author_id)}}">
+              <img src="{{url_for('static',filename='images/'+post.author.profile_image)}}"
+                alt="Author Profile Image" class="img-fluid rounded-circle border border-warning border-2"
+                style="width: 40px;">
+              </a>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <div class="d-flex flex-row align-items-center">
+                <a class="text-decoration-none" style="color: #ebe4b5;" href="{{url_for('users.dashboard',user=post.author_id)}}"><b><p class="font-monospace m-1 mb-0 fs-5">{{post.author.username}}</p></a></b>
+              </div>
+              <div class="d-flex flex-row align-items-center">
+                <p class="mb-1 ms-3 row" style="color: #E5E5CB;">
+                  <p class="col-6"><small>Last Activity: <i class="text-info">{{post.last_edited_timestamp.strftime("%Y-%m-%d %H:%M:%S")}}</i></small></p>
+                  <p class="col-6"><small>Post Created: <i class="text-info">{{post.created_timestamp.strftime("%Y-%m-%d %H:%M:%S")}}</i></small></p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- If post contains image. Display that -->
+          <div class="row d-flex ms-3 me-3 justify-content-center align-items-center h-100 p-2 pb-0"
+            style="border-radius: 8px; background-color: #E5E5CB;">
+            {% if post.image_url!="default_blogpost.png" %}
+            <div style="width: 50%;">
+              <img src="{{url_for('static',filename='images/'+post.image_url)}}"
+                class="card-img-top rounded img-thumbnail img-fluid" alt="Blog Image">
+            </div>
+            {% endif %}
+            <div class="card-body" style="color: #3C2A21;">
+              <h5 class="card-title"><span style="color: #AC4425;">Title: </span>{{post.title}}</h5>
+              <p class="card-text"><span style="color: #AC4425;">Description: </span>{{post.description}}</p>
+              <div class="text-center">
+              <a href="{{url_for('posts.individual_post',post_id=post.post_id)}}" class="btn btn-primary btn-sm">Go to post</a>
+                <a class="btn btn light btn-sm">{{post.likes_count}}
+                  Likes</a>
+                  {% if post.post_id in likes %}
+                  <a href="{{url_for('users.likes',post_id=post.post_id)}}" class="btn"><i class="bi bi-heart-fill"></i></a>
+                  {% else %}
+                  <a href="{{url_for('users.likes',post_id=post.post_id)}}" class="btn"><i class="bi bi-heart"></i></a>
+                  {% endif %}
+                <a class="btn btn light btn-sm">{{post.comments|length}} Comments</a>
+                <a href="{{url_for('posts.comment',post_id=post.post_id)}}" class="btn"><i class="bi bi-chat-right-dots"></i></a>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock content %}

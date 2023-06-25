@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Blog | {% endblock title %}
+{% block content_title %}
+
+{% endblock content_title %}
+{% block content %}
+
+<div class="row d-flex mt-1 justify-content-center align-items-center">
+  <div class="col col-md-12 col-lg-10 col-xl-8">
+    <div class="card" style="background-color:#fffde8">
+      <div class="card-body text-black">
+        <div class="d-flex align-items-center ms-3 me-3 mb-1 p-1 text-light"
+          style="border-radius: 10px; background-color: #472183;">
+          <div class="flex-shrink-0 ms-2">
+            <a href="{{url_for('users.dashboard',user=post.author_id)}}">
+              <img src="{{url_for('static',filename='images/'+post.author.profile_image)}}" alt="Author Profile Image"
+                class="img-fluid rounded-circle border border-warning border-2" style="width: 40px;">
+            </a>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <div class="d-flex flex-row align-items-center">
+              <a class="link-warning text-decoration-none" href="{{url_for('users.dashboard',user=post.author_id)}}"><b>
+                  <p class="font-monospace m-1 ">{{post.author.username}}</p></a></b>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+              <p class="mb-1">{% if post.created_timestamp!=post.last_edited_timestamp %}
+                <small>Last Edited: <i class="text-info">{{post.last_edited_timestamp.strftime("%Y-%m-%d %H:%M:%S")}}</i></small>
+              </p>
+              {% else %}
+              <small>Post Created: <i class="text-info">{{post.created_timestamp.strftime("%Y-%m-%d %H:%M:%S")}}</i></small></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <!-- If post contains image. Display that -->
+        <div class="row d-flex ms-3 me-3 justify-content-center align-items-center h-100 p-2 pb-0"
+          style="border-radius: 8px; background-color: #82C3EC;">
+          {% if post.image_url!="default_blogpost.png" %}
+          <div style="width: 50%;">
+            <img src="{{url_for('static',filename='images/'+post.image_url)}}"
+              class="card-img-top rounded img-thumbnail img-fluid" alt="Blog Image">
+          </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title"><span class="fst-italic" style="color:#4B56D2">Title : </span>{{post.title}}</h5>
+            <p class="card-text"><span class="fst-italic" style="color:#4B56D2">Description :
+              </span>{{post.description}}</p>
+            <div class="row">
+              <div class="col"><span class="fst-italic" style="color:#4B56D2">Date Posted :
+                </span>{{post.created_timestamp.strftime("%Y-%m-%d")}}</div>
+              <div class="col"><span class="fst-italic" style="color:#4B56D2">Time :
+                </span>{{post.created_timestamp.strftime("%H:%M:%S")}} hours</div>
+            </div>
+            <a href="{{url_for('users.user_feed')}}" class="btn btn-dark btn-sm">Go to Feed</a>
+            <a class="btn btn light btn-sm">{{post.likes_count}}
+              Likes</a>
+            {% if liked %}
+            <a href="{{url_for('users.likes',post_id=post.post_id,next='posts.html')}}" class="btn"><i
+                class="bi bi-heart-fill"></i></a>
+            {% else %}
+            <a href="{{url_for('users.likes',post_id=post.post_id,next='posts.html')}}" class="btn"><i
+                class="bi bi-heart"></i></a>
+            {% endif %}
+            <a class="btn btn light btn-sm">{{post.comments|length}} Comments</a>
+            <a href="{{url_for('posts.comment',post_id=post.post_id)}}" class="btn"><i
+                class="bi bi-chat-right-dots"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display all comments -->
+      {% if post.comments %}
+      <p class="fs-4 text-center fst-italic">Comments</p>
+      {% for comment in post.comments %}
+      <div class="d-flex align-items-center ms-4 me-4 mb-1 ps-1 pe-1 text-light"
+        style="border-radius: 10px; background-color: #472183;">
+        <div class="flex-shrink-0 ms-2"><a href="{{url_for('users.dashboard',user=comment.user_id)}}">
+            <img src="{{url_for('static',filename='images/'+comment.author().profile_image)}}"
+              alt="Author Profile Image" class="img-fluid rounded-circle border border-warning border-2"
+              style="width: 40px;"></a>
+        </div>
+        <div class="flex-grow-1 ms-3">
+          <div class="d-flex flex-row align-items-center">
+            <a class="link-warning text-decoration-none" href="{{url_for('users.dashboard',user=comment.user_id)}}"><b>
+                <p class="font-monospace m-1 ">{{comment.author().username}}</p></a></b>
+            <span class="text-light fst-italic" style="font-size: 12px;">({{comment.created_timestamp.strftime("%Y-%m-%d %H:%M")}} hrs)</span>
+          </div>
+          <p><span class="fst-italic" style="font-size: 12px;color: #F1F6F5;">Commented: </span><span class="ms-1 fs-6"
+              style="color: #FEF5AC;">{{comment.comment_body}}</span></p>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="fs-4 text-center fst-italic">No Comments so far on this Blog.</p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock content %}

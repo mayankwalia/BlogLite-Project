@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock title %}
+{% block content_title %}
+    
+{% endblock content_title %}
+{% block content %}
+<div class="container mt-2">
+    <div class="row text-center">
+        <div class="col-12 display-6">Bar Plots</div>
+    </div>
+    <div class="row text-center">
+        <div class="col-6">
+            <img src="../static/engagement_data/{{current_user.username}}_likes_bar.png" class="img-fluid" alt="...">
+            <p class="fst-italic fs-4 text-info">Plot of Post and the count of likes obtained</p>
+        </div>
+        <div class="col-6">
+            <img src="../static/engagement_data/{{current_user.username}}_comments_bar.png" class="img-fluid" alt="...">
+            <p class="fst-italic fs-4 text-info">Plot of Post and the count of comments obtained</p>
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}

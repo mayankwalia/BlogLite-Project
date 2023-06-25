@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}BlogLite</title>
+    <!-- Brand Image -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='customStyles.css') }}">
+    <style type="text/css">
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap-icons.css') }}" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+
+    <!-- Jinja Block for additional CSS for individual templates -->
+    {% block additional_styles %}{% endblock %}
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <!-- Jinja Block for additional JS for individual templates -->
+    {% block additional_scripts %}{% endblock %}
+</head>
+
+<!-- Can add custom styling to body using this block -->
+
+<body {% block body_class %}{% endblock %}>
+
+    <!-- Navbar of the Blog Lite Application -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <!-- Brand Name -->
+            <a class="navbar-brand" href="/">{% block brand %}<i class="bi bi-house"></i> BlogLite{% endblock %}</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- <li class="nav-item"><a class="nav-link" href="/">Home</a></li> -->
+                    <!-- If user is logged in -->
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{{url_for('users.user_feed')}}"><i
+                                class="bi bi-newspaper"></i> Feed</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url_for('users.users_listing')}}"><i
+                                class="bi bi-search"></i> Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url_for('posts.create')}}"><i
+                                class="bi bi-plus-circle-fill"></i> Create Blog</a></li>
+                    <a href="{{url_for('users.dashboard')}}" class="nav-link"><i class="bi bi-person-square"></i>
+                        Dashboard</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown"><i
+                                class="bi bi-person-fill-gear"></i> Account
+                            {{current_user.username}}<b class="caret"></b></a>
+                        <ul class="dropdown-menu bg-dark">
+                            <li><a href="{{ url_for('users.engagement') }}" class="nav-link"><i
+                                        class="bi bi-cloud-arrow-down-fill"></i> Export Data</a></li>
+                            <li><a href="{{ url_for('users.insights') }}" class="nav-link"><i
+                                        class="bi bi-graph-up"></i> Insights</a></li>
+                            <li><a href="{{ url_for('users.update_password') }}" class="nav-link"><i
+                                        class="bi bi-shield-lock-fill"></i> Change Password</a></li>
+                            <li><a href="{{ url_for('users.logout') }}" class="nav-link"><i
+                                        class="bi bi-box-arrow-right"></i> Log Out</a></li>
+                            <li><a href="{{ url_for('users.delete') }}" class="nav-link"><i class="bi bi-trash-fill"></i> Delete Account</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <!-- If user is not logged in -->
+                    <li class="nav-item"><a class="nav-link" href="{{url_for('users.login')}}"><i
+                                class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url_for('users.signup')}}"><i
+                                class="bi bi-person-fill-add"></i> Signup</a></li>
+                    {% endif %}
+                    <!-- Jinja block for extra navitems -->
+                    {% block extra_nav %}{% endblock %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- For flashing messgages on screen (e.g. operation is successful or failed) -->
+    <!-- Usage flash('message','category-color') -->
+    <!-- Loop for iterating over several flash messages from different operations -->
+    <div class="container mb-5">
+        <div class="row">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{category}} alert-dismissible fade show mt-2" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+
+            <!-- Block for the page title -->
+            <div class="display-5 text-center">{% block content_title %}{% endblock %}</div>
+
+            <!-- Main content area -->
+            {% block content %}
+            {% endblock %}
+
+            <!-- Main Block when sidebar is needed -->
+            <div class="col-md-9">
+                {% block content_using_sidebar %}
+                {% endblock %}
+            </div>
+
+            <!-- Block for sidebar for additional info -->
+            <div class="col-md-3">
+                <!-- {% if current_user.is_authenticated %}
+                    <a class="btn btn-outline-info" href="{{url_for('posts.create')}}">Create Post</a>
+                {% endif %} -->
+                {% block sidebar %}
+                {% endblock %}
+            </div>
+
+            <!-- <div class="row">
+            <hr/>
+            <footer>
+                <footer>&copy; BlogLite Application MAD 1 Project</footer>
+            </footer>
+        </div> -->
+        </div>
+    </div>
+    <div class="container mb-3 text-center">
+        <footer>Blog Lite &copy; 2022-2023 | Modern Application Development</footer>
+    </div>
+</body>
+
+</html>
